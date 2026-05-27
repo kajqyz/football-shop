@@ -1,0 +1,25 @@
+{% extends 'firstproject/base.html' %}
+{% load static %}
+
+{% block title %}Бренды | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="section">
+    <p class="eyebrow">Справочник</p>
+    <h1>Бренды</h1>
+    <div class="list-grid">
+        {% for brand in brands %}
+            <article class="card logo-card">
+                <img src="{% static brand.logo %}" alt="{{ brand.name }}">
+                <div class="card-body">
+                    <h3>{{ brand.name }}</h3>
+                    <p>{{ brand.country }}</p>
+                    <a href="{{ brand.get_absolute_url }}">Подробнее</a>
+                </div>
+            </article>
+        {% empty %}
+            <p class="muted">Бренды не добавлены.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

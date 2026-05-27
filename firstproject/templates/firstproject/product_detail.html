@@ -1,0 +1,22 @@
+{% extends 'firstproject/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | Футбол Маркет{% endblock %}
+
+{% block content %}
+<article class="detail">
+    <img class="detail-image" src="{% static product.photo %}" alt="{{ product.name }}">
+    <div class="detail-content">
+        <p class="eyebrow">{{ product.category.name }} · {{ product.club.name }}</p>
+        <h1>{{ product.name }}</h1>
+        <p>{{ product.description }}</p>
+        <dl class="facts">
+            <div><dt>Цена</dt><dd>{{ product.price }} ₽</dd></div>
+            <div><dt>Остаток</dt><dd>{{ product.stock }} шт.</dd></div>
+            <div><dt>Бренд</dt><dd><a href="{{ product.brand.get_absolute_url }}">{{ product.brand.name }}</a></dd></div>
+            <div><dt>Поставщик</dt><dd><a href="{{ product.supplier.get_absolute_url }}">{{ product.supplier.name }}</a></dd></div>
+        </dl>
+        <a class="button" href="{% url 'firstproject:product_list' %}">Вернуться к товарам</a>
+    </div>
+</article>
+{% endblock %}

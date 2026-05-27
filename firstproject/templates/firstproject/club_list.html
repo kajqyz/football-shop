@@ -1,0 +1,25 @@
+{% extends 'firstproject/base.html' %}
+{% load static %}
+
+{% block title %}Клубы | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="section">
+    <p class="eyebrow">Справочник</p>
+    <h1>Футбольные клубы</h1>
+    <div class="list-grid">
+        {% for club in clubs %}
+            <article class="card logo-card">
+                <img src="{% static club.logo %}" alt="{{ club.name }}">
+                <div class="card-body">
+                    <h3>{{ club.name }}</h3>
+                    <p>{{ club.country }} · {{ club.league }}</p>
+                    <a href="{{ club.get_absolute_url }}">Подробнее</a>
+                </div>
+            </article>
+        {% empty %}
+            <p class="muted">Клубы не добавлены.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

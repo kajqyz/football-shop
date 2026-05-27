@@ -1,0 +1,23 @@
+{% extends 'firstproject/base.html' %}
+
+{% block title %}Поставщики | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="section">
+    <p class="eyebrow">Справочник</p>
+    <h1>Поставщики</h1>
+    <div class="list-grid">
+        {% for supplier in suppliers %}
+            <article class="card">
+                <div class="card-body">
+                    <h3>{{ supplier.name }}</h3>
+                    <p>{{ supplier.city }} · {{ supplier.email }}</p>
+                    <a href="{{ supplier.get_absolute_url }}">Подробнее</a>
+                </div>
+            </article>
+        {% empty %}
+            <p class="muted">Поставщики не добавлены.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

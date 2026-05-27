@@ -1,0 +1,17 @@
+{% extends 'firstproject/base.html' %}
+{% load static %}
+
+{% block title %}{{ brand.name }} | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="content-panel">
+    <img class="logo-large" src="{% static brand.logo %}" alt="{{ brand.name }}">
+    <p class="eyebrow">Бренд</p>
+    <h1>{{ brand.name }}</h1>
+    <p>{{ brand.description }}</p>
+    <dl class="facts compact">
+        <div><dt>Страна</dt><dd>{{ brand.country }}</dd></div>
+    </dl>
+    <a class="button" href="{% url 'firstproject:brand_list' %}">Вернуться к брендам</a>
+</section>
+{% endblock %}

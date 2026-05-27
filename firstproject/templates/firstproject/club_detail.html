@@ -1,0 +1,18 @@
+{% extends 'firstproject/base.html' %}
+{% load static %}
+
+{% block title %}{{ club.name }} | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="content-panel">
+    <img class="logo-large" src="{% static club.logo %}" alt="{{ club.name }}">
+    <p class="eyebrow">Футбольный клуб</p>
+    <h1>{{ club.name }}</h1>
+    <p>{{ club.description }}</p>
+    <dl class="facts compact">
+        <div><dt>Страна</dt><dd>{{ club.country }}</dd></div>
+        <div><dt>Лига</dt><dd>{{ club.league }}</dd></div>
+    </dl>
+    <a class="button" href="{% url 'firstproject:club_list' %}">Вернуться к клубам</a>
+</section>
+{% endblock %}

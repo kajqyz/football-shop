@@ -1,0 +1,35 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Футбол Маркет{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'firstproject/css/styles.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="{% url 'firstproject:home' %}">Футбол Маркет</a>
+        <nav class="nav">
+            <a href="{% url 'firstproject:home' %}">Главная</a>
+            <a href="{% url 'firstproject:about' %}">О компании</a>
+            <a href="{% url 'firstproject:product_list' %}">Товары</a>
+            <a href="{% url 'firstproject:category_list' %}">Категории</a>
+            <a href="{% url 'firstproject:club_list' %}">Клубы</a>
+            <a href="{% url 'firstproject:brand_list' %}">Бренды</a>
+            <a href="{% url 'firstproject:supplier_list' %}">Поставщики</a>
+            <a href="{% url 'firstproject:order_list' %}">Заказы</a>
+            <a class="cart-link" href="{% url 'firstproject:cart' %}">Корзина</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <span>Футбол Маркет</span>
+        <span>Магазин формы, шарфов и аксессуаров для болельщиков</span>
+    </footer>
+</body>
+</html>

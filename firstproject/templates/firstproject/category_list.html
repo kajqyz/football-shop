@@ -1,0 +1,23 @@
+{% extends 'firstproject/base.html' %}
+
+{% block title %}Категории | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="section">
+    <p class="eyebrow">Справочник</p>
+    <h1>Категории товаров</h1>
+    <div class="list-grid">
+        {% for category in categories %}
+            <article class="card">
+                <div class="card-body">
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.description }}</p>
+                    <a href="{{ category.get_absolute_url }}">Открыть категорию</a>
+                </div>
+            </article>
+        {% empty %}
+            <p class="muted">Категории не добавлены.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

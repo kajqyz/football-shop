@@ -1,0 +1,23 @@
+{% extends 'firstproject/base.html' %}
+
+{% block title %}{{ category.name }} | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Категория</p>
+            <h1>{{ category.name }}</h1>
+            <p>{{ category.description }}</p>
+        </div>
+        <a href="{% url 'firstproject:category_list' %}">Все категории</a>
+    </div>
+    <div class="grid">
+        {% for product in category.products.all %}
+            {% include 'firstproject/includes/product_card.html' %}
+        {% empty %}
+            <p class="muted">В этой категории пока нет товаров.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

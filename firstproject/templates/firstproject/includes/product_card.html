@@ -1,0 +1,13 @@
+{% load static %}
+<article class="card product-card">
+    <img src="{% static product.photo %}" alt="{{ product.name }}">
+    <div class="card-body">
+        <p class="tag">{{ product.category.name }} · {{ product.club.name }}</p>
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.short_description }}</p>
+        <div class="card-footer">
+            <strong>{{ product.price }} ₽</strong>
+            <a href="{{ product.get_absolute_url }}">Подробнее</a>
+        </div>
+    </div>
+</article>

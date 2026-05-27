@@ -1,0 +1,17 @@
+{% extends 'firstproject/base.html' %}
+
+{% block title %}{{ supplier.name }} | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="content-panel">
+    <p class="eyebrow">Поставщик</p>
+    <h1>{{ supplier.name }}</h1>
+    <p>{{ supplier.description }}</p>
+    <dl class="facts compact">
+        <div><dt>Город</dt><dd>{{ supplier.city }}</dd></div>
+        <div><dt>Email</dt><dd>{{ supplier.email }}</dd></div>
+        <div><dt>Телефон</dt><dd>{{ supplier.phone }}</dd></div>
+    </dl>
+    <a class="button" href="{% url 'firstproject:supplier_list' %}">Вернуться к поставщикам</a>
+</section>
+{% endblock %}
