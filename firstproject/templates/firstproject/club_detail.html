@@ -13,6 +13,10 @@
         <div><dt>Страна</dt><dd>{{ club.country }}</dd></div>
         <div><dt>Лига</dt><dd>{{ club.league }}</dd></div>
     </dl>
-    <a class="button" href="{% url 'firstproject:club_list' %}">Вернуться к клубам</a>
+    <div class="actions">
+        <a class="button" href="{% url 'firstproject:club_update' club.pk %}">Изменить</a>
+        <a class="button danger-button" href="{% url 'firstproject:club_delete' club.pk %}">Удалить</a>
+        <a class="button secondary-button" href="{% url 'firstproject:club_list' %}">Вернуться к клубам</a>
+    </div>
 </section>
 {% endblock %}

@@ -1,6 +1,52 @@
-from django.views.generic import DetailView, ListView, TemplateView
+from django.contrib import messages
+from django.db.models import ProtectedError
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    TemplateView,
+    UpdateView,
+)
 
+from .forms import BrandForm, CategoryForm, ClubForm, ProductForm, SupplierForm
 from .models import Brand, Category, Club, Order, Product, Supplier
+
+
+class FormContextMixin:
+    action_label = "Сохранить"
+    cancel_url_name = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["action_label"] = self.action_label
+        if self.cancel_url_name:
+            context["cancel_url"] = reverse_lazy(self.cancel_url_name)
+        return context
+
+
+class DeleteContextMixin:
+    cancel_url_name = None
+    object_label = "объект"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["object_label"] = self.object_label
+        if self.cancel_url_name:
+            context["cancel_url"] = reverse_lazy(self.cancel_url_name)
+        return context
+
+    def form_valid(self, form):
+        try:
+            return super().form_valid(form)
+        except ProtectedError:
+            messages.error(
+                self.request,
+                "Запись нельзя удалить, потому что она используется в связанных данных.",
+            )
+            return redirect(self.get_success_url())
 
 
 class HomeView(TemplateView):
@@ -42,6 +88,34 @@ class ProductDetailView(DetailView):
         return Product.objects.select_related("category", "club", "brand", "supplier")
 
 
+class ProductCreateView(FormContextMixin, CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "firstproject/entity_form.html"
+    action_label = "Добавить товар"
+    cancel_url_name = "firstproject:product_list"
+
+
+class ProductUpdateView(FormContextMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "firstproject/entity_form.html"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    action_label = "Сохранить товар"
+    cancel_url_name = "firstproject:product_list"
+
+
+class ProductDeleteView(DeleteContextMixin, DeleteView):
+    model = Product
+    template_name = "firstproject/entity_confirm_delete.html"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    success_url = reverse_lazy("firstproject:product_list")
+    cancel_url_name = "firstproject:product_list"
+    object_label = "товар"
+
+
 class CategoryListView(ListView):
     model = Category
     template_name = "firstproject/category_list.html"
@@ -56,6 +130,34 @@ class CategoryDetailView(DetailView):
     slug_url_kwarg = "slug"
 
 
+class CategoryCreateView(FormContextMixin, CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = "firstproject/entity_form.html"
+    action_label = "Добавить категорию"
+    cancel_url_name = "firstproject:category_list"
+
+
+class CategoryUpdateView(FormContextMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = "firstproject/entity_form.html"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    action_label = "Сохранить категорию"
+    cancel_url_name = "firstproject:category_list"
+
+
+class CategoryDeleteView(DeleteContextMixin, DeleteView):
+    model = Category
+    template_name = "firstproject/entity_confirm_delete.html"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    success_url = reverse_lazy("firstproject:category_list")
+    cancel_url_name = "firstproject:category_list"
+    object_label = "категорию"
+
+
 class ClubListView(ListView):
     model = Club
     template_name = "firstproject/club_list.html"
@@ -66,6 +168,30 @@ class ClubDetailView(DetailView):
     model = Club
     template_name = "firstproject/club_detail.html"
     context_object_name = "club"
+
+
+class ClubCreateView(FormContextMixin, CreateView):
+    model = Club
+    form_class = ClubForm
+    template_name = "firstproject/entity_form.html"
+    action_label = "Добавить клуб"
+    cancel_url_name = "firstproject:club_list"
+
+
+class ClubUpdateView(FormContextMixin, UpdateView):
+    model = Club
+    form_class = ClubForm
+    template_name = "firstproject/entity_form.html"
+    action_label = "Сохранить клуб"
+    cancel_url_name = "firstproject:club_list"
+
+
+class ClubDeleteView(DeleteContextMixin, DeleteView):
+    model = Club
+    template_name = "firstproject/entity_confirm_delete.html"
+    success_url = reverse_lazy("firstproject:club_list")
+    cancel_url_name = "firstproject:club_list"
+    object_label = "клуб"
 
 
 class BrandListView(ListView):
@@ -80,6 +206,30 @@ class BrandDetailView(DetailView):
     context_object_name = "brand"
 
 
+class BrandCreateView(FormContextMixin, CreateView):
+    model = Brand
+    form_class = BrandForm
+    template_name = "firstproject/entity_form.html"
+    action_label = "Добавить бренд"
+    cancel_url_name = "firstproject:brand_list"
+
+
+class BrandUpdateView(FormContextMixin, UpdateView):
+    model = Brand
+    form_class = BrandForm
+    template_name = "firstproject/entity_form.html"
+    action_label = "Сохранить бренд"
+    cancel_url_name = "firstproject:brand_list"
+
+
+class BrandDeleteView(DeleteContextMixin, DeleteView):
+    model = Brand
+    template_name = "firstproject/entity_confirm_delete.html"
+    success_url = reverse_lazy("firstproject:brand_list")
+    cancel_url_name = "firstproject:brand_list"
+    object_label = "бренд"
+
+
 class SupplierListView(ListView):
     model = Supplier
     template_name = "firstproject/supplier_list.html"
@@ -90,6 +240,30 @@ class SupplierDetailView(DetailView):
     model = Supplier
     template_name = "firstproject/supplier_detail.html"
     context_object_name = "supplier"
+
+
+class SupplierCreateView(FormContextMixin, CreateView):
+    model = Supplier
+    form_class = SupplierForm
+    template_name = "firstproject/entity_form.html"
+    action_label = "Добавить поставщика"
+    cancel_url_name = "firstproject:supplier_list"
+
+
+class SupplierUpdateView(FormContextMixin, UpdateView):
+    model = Supplier
+    form_class = SupplierForm
+    template_name = "firstproject/entity_form.html"
+    action_label = "Сохранить поставщика"
+    cancel_url_name = "firstproject:supplier_list"
+
+
+class SupplierDeleteView(DeleteContextMixin, DeleteView):
+    model = Supplier
+    template_name = "firstproject/entity_confirm_delete.html"
+    success_url = reverse_lazy("firstproject:supplier_list")
+    cancel_url_name = "firstproject:supplier_list"
+    object_label = "поставщика"
 
 
 class OrderListView(ListView):

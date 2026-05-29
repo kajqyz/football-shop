@@ -5,8 +5,13 @@
 
 {% block content %}
 <section class="section">
-    <p class="eyebrow">Справочник</p>
-    <h1>Футбольные клубы</h1>
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Справочник</p>
+            <h1>Футбольные клубы</h1>
+        </div>
+        <a class="button" href="{% url 'firstproject:club_create' %}">Добавить клуб</a>
+    </div>
     <div class="list-grid">
         {% for club in clubs %}
             <article class="card logo-card">
@@ -15,6 +20,10 @@
                     <h3>{{ club.name }}</h3>
                     <p>{{ club.country }} · {{ club.league }}</p>
                     <a href="{{ club.get_absolute_url }}">Подробнее</a>
+                    <div class="card-actions">
+                        <a href="{% url 'firstproject:club_update' club.pk %}">Изменить</a>
+                        <a class="danger-link" href="{% url 'firstproject:club_delete' club.pk %}">Удалить</a>
+                    </div>
                 </div>
             </article>
         {% empty %}

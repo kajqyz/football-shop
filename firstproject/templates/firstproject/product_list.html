@@ -9,7 +9,10 @@
             <p class="eyebrow">Каталог</p>
             <h1>Все товары</h1>
         </div>
-        <a href="{% url 'firstproject:home' %}">На главную</a>
+        <div class="actions">
+            <a class="button" href="{% url 'firstproject:product_create' %}">Добавить товар</a>
+            <a class="button secondary-button" href="{% url 'firstproject:home' %}">На главную</a>
+        </div>
     </div>
     <div class="grid">
         {% for product in products %}

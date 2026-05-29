@@ -5,8 +5,13 @@
 
 {% block content %}
 <section class="section">
-    <p class="eyebrow">Справочник</p>
-    <h1>Бренды</h1>
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Справочник</p>
+            <h1>Бренды</h1>
+        </div>
+        <a class="button" href="{% url 'firstproject:brand_create' %}">Добавить бренд</a>
+    </div>
     <div class="list-grid">
         {% for brand in brands %}
             <article class="card logo-card">
@@ -15,6 +20,10 @@
                     <h3>{{ brand.name }}</h3>
                     <p>{{ brand.country }}</p>
                     <a href="{{ brand.get_absolute_url }}">Подробнее</a>
+                    <div class="card-actions">
+                        <a href="{% url 'firstproject:brand_update' brand.pk %}">Изменить</a>
+                        <a class="danger-link" href="{% url 'firstproject:brand_delete' brand.pk %}">Удалить</a>
+                    </div>
                 </div>
             </article>
         {% empty %}

@@ -9,5 +9,9 @@
             <strong>{{ product.price }} ₽</strong>
             <a href="{{ product.get_absolute_url }}">Подробнее</a>
         </div>
+        <div class="card-actions">
+            <a href="{% url 'firstproject:product_update' product.slug %}">Изменить</a>
+            <a class="danger-link" href="{% url 'firstproject:product_delete' product.slug %}">Удалить</a>
+        </div>
     </div>
 </article>

@@ -4,8 +4,13 @@
 
 {% block content %}
 <section class="section">
-    <p class="eyebrow">Справочник</p>
-    <h1>Поставщики</h1>
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Справочник</p>
+            <h1>Поставщики</h1>
+        </div>
+        <a class="button" href="{% url 'firstproject:supplier_create' %}">Добавить поставщика</a>
+    </div>
     <div class="list-grid">
         {% for supplier in suppliers %}
             <article class="card">
@@ -13,6 +18,10 @@
                     <h3>{{ supplier.name }}</h3>
                     <p>{{ supplier.city }} · {{ supplier.email }}</p>
                     <a href="{{ supplier.get_absolute_url }}">Подробнее</a>
+                    <div class="card-actions">
+                        <a href="{% url 'firstproject:supplier_update' supplier.pk %}">Изменить</a>
+                        <a class="danger-link" href="{% url 'firstproject:supplier_delete' supplier.pk %}">Удалить</a>
+                    </div>
                 </div>
             </article>
         {% empty %}

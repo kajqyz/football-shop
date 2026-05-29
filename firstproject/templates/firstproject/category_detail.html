@@ -10,7 +10,11 @@
             <h1>{{ category.name }}</h1>
             <p>{{ category.description }}</p>
         </div>
-        <a href="{% url 'firstproject:category_list' %}">Все категории</a>
+        <div class="actions">
+            <a class="button" href="{% url 'firstproject:category_update' category.slug %}">Изменить</a>
+            <a class="button danger-button" href="{% url 'firstproject:category_delete' category.slug %}">Удалить</a>
+            <a class="button secondary-button" href="{% url 'firstproject:category_list' %}">Все категории</a>
+        </div>
     </div>
     <div class="grid">
         {% for product in category.products.all %}

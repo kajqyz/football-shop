@@ -51,3 +51,10 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ("id", "customer", "status", "created_at")
     list_filter = ("status", "created_at")
     inlines = [OrderItemInline]
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ("order", "product", "quantity", "price", "total_price")
+    list_filter = ("product",)
+    search_fields = ("order__id", "product__name")
