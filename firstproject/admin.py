@@ -48,8 +48,9 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "customer", "status", "created_at")
+    list_display = ("id", "customer", "user", "status", "created_at")
     list_filter = ("status", "created_at")
+    search_fields = ("customer__email", "customer__last_name", "user__username")
     inlines = [OrderItemInline]
 
 

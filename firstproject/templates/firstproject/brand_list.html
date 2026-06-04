@@ -10,7 +10,9 @@
             <p class="eyebrow">Справочник</p>
             <h1>Бренды</h1>
         </div>
-        <a class="button" href="{% url 'firstproject:brand_create' %}">Добавить бренд</a>
+        {% if user.is_staff %}
+            <a class="button" href="{% url 'firstproject:brand_create' %}">Добавить бренд</a>
+        {% endif %}
     </div>
     <div class="list-grid">
         {% for brand in brands %}
@@ -20,10 +22,12 @@
                     <h3>{{ brand.name }}</h3>
                     <p>{{ brand.country }}</p>
                     <a href="{{ brand.get_absolute_url }}">Подробнее</a>
-                    <div class="card-actions">
-                        <a href="{% url 'firstproject:brand_update' brand.pk %}">Изменить</a>
-                        <a class="danger-link" href="{% url 'firstproject:brand_delete' brand.pk %}">Удалить</a>
-                    </div>
+                    {% if user.is_staff %}
+                        <div class="card-actions">
+                            <a href="{% url 'firstproject:brand_update' brand.pk %}">Изменить</a>
+                            <a class="danger-link" href="{% url 'firstproject:brand_delete' brand.pk %}">Удалить</a>
+                        </div>
+                    {% endif %}
                 </div>
             </article>
         {% empty %}

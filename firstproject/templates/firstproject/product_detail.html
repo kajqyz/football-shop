@@ -17,8 +17,16 @@
             <div><dt>Поставщик</dt><dd><a href="{{ product.supplier.get_absolute_url }}">{{ product.supplier.name }}</a></dd></div>
         </dl>
         <div class="actions">
-            <a class="button" href="{% url 'firstproject:product_update' product.slug %}">Изменить</a>
-            <a class="button danger-button" href="{% url 'firstproject:product_delete' product.slug %}">Удалить</a>
+            <form method="post" action="{% url 'firstproject:cart_add' product.slug %}" class="actions">
+                {% csrf_token %}
+                {{ cart_product_form.quantity }}
+                {{ cart_product_form.reload }}
+                <button type="submit">Добавить в корзину</button>
+            </form>
+            {% if user.is_staff %}
+                <a class="button" href="{% url 'firstproject:product_update' product.slug %}">Изменить</a>
+                <a class="button danger-button" href="{% url 'firstproject:product_delete' product.slug %}">Удалить</a>
+            {% endif %}
             <a class="button secondary-button" href="{% url 'firstproject:product_list' %}">Вернуться к товарам</a>
         </div>
     </div>

@@ -74,12 +74,13 @@ class CustomerViewSet(BaseApiViewSet):
 
 
 class OrderViewSet(BaseApiViewSet):
-    queryset = Order.objects.select_related("customer").prefetch_related("items")
+    queryset = Order.objects.select_related("customer", "user").prefetch_related("items")
     serializer_class = OrderSerializer
     search_fields = [
         "customer__first_name",
         "customer__last_name",
         "customer__email",
+        "user__username",
         "status",
         "delivery_address",
     ]

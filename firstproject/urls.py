@@ -1,7 +1,9 @@
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
 from .views import (
     AboutView,
+    AddToCartView,
     BrandCreateView,
     BrandDeleteView,
     BrandDetailView,
@@ -18,6 +20,7 @@ from .views import (
     ClubDetailView,
     ClubListView,
     ClubUpdateView,
+    CreateOrderFromCartView,
     HomeView,
     OrderDetailView,
     OrderListView,
@@ -26,11 +29,14 @@ from .views import (
     ProductDetailView,
     ProductListView,
     ProductUpdateView,
+    RegisterView,
+    RemoveFromCartView,
     SupplierCreateView,
     SupplierDeleteView,
     SupplierDetailView,
     SupplierListView,
     SupplierUpdateView,
+    UpdateCartItemView,
 )
 
 app_name = "firstproject"
@@ -39,6 +45,33 @@ urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     path("about/", AboutView.as_view(), name="about"),
     path("cart/", CartView.as_view(), name="cart"),
+    path(
+        "cart/add/<slug:slug>/",
+        AddToCartView.as_view(),
+        name="cart_add",
+    ),
+    path(
+        "cart/update/<int:pk>/",
+        UpdateCartItemView.as_view(),
+        name="cart_update",
+    ),
+    path(
+        "cart/remove/<int:pk>/",
+        RemoveFromCartView.as_view(),
+        name="cart_remove",
+    ),
+    path(
+        "cart/create-order/",
+        CreateOrderFromCartView.as_view(),
+        name="cart_create_order",
+    ),
+    path(
+        "login/",
+        LoginView.as_view(template_name="registration/login.html"),
+        name="login",
+    ),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path("register/", RegisterView.as_view(), name="register"),
     path("products/", ProductListView.as_view(), name="product_list"),
     path("products/create/", ProductCreateView.as_view(), name="product_create"),
     path(

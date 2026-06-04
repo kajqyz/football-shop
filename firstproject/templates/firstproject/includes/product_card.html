@@ -10,8 +10,16 @@
             <a href="{{ product.get_absolute_url }}">Подробнее</a>
         </div>
         <div class="card-actions">
-            <a href="{% url 'firstproject:product_update' product.slug %}">Изменить</a>
-            <a class="danger-link" href="{% url 'firstproject:product_delete' product.slug %}">Удалить</a>
+            <form method="post" action="{% url 'firstproject:cart_add' product.slug %}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="reload" value="">
+                <button type="submit" class="small-button">В корзину</button>
+            </form>
+            {% if user.is_staff %}
+                <a href="{% url 'firstproject:product_update' product.slug %}">Изменить</a>
+                <a class="danger-link" href="{% url 'firstproject:product_delete' product.slug %}">Удалить</a>
+            {% endif %}
         </div>
     </div>
 </article>

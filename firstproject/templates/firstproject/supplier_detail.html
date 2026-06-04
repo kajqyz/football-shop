@@ -13,8 +13,10 @@
         <div><dt>Телефон</dt><dd>{{ supplier.phone }}</dd></div>
     </dl>
     <div class="actions">
-        <a class="button" href="{% url 'firstproject:supplier_update' supplier.pk %}">Изменить</a>
-        <a class="button danger-button" href="{% url 'firstproject:supplier_delete' supplier.pk %}">Удалить</a>
+        {% if user.is_staff %}
+            <a class="button" href="{% url 'firstproject:supplier_update' supplier.pk %}">Изменить</a>
+            <a class="button danger-button" href="{% url 'firstproject:supplier_delete' supplier.pk %}">Удалить</a>
+        {% endif %}
         <a class="button secondary-button" href="{% url 'firstproject:supplier_list' %}">Вернуться к поставщикам</a>
     </div>
 </section>

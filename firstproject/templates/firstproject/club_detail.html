@@ -14,8 +14,10 @@
         <div><dt>Лига</dt><dd>{{ club.league }}</dd></div>
     </dl>
     <div class="actions">
-        <a class="button" href="{% url 'firstproject:club_update' club.pk %}">Изменить</a>
-        <a class="button danger-button" href="{% url 'firstproject:club_delete' club.pk %}">Удалить</a>
+        {% if user.is_staff %}
+            <a class="button" href="{% url 'firstproject:club_update' club.pk %}">Изменить</a>
+            <a class="button danger-button" href="{% url 'firstproject:club_delete' club.pk %}">Удалить</a>
+        {% endif %}
         <a class="button secondary-button" href="{% url 'firstproject:club_list' %}">Вернуться к клубам</a>
     </div>
 </section>

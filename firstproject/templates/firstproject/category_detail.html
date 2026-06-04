@@ -11,8 +11,10 @@
             <p>{{ category.description }}</p>
         </div>
         <div class="actions">
-            <a class="button" href="{% url 'firstproject:category_update' category.slug %}">Изменить</a>
-            <a class="button danger-button" href="{% url 'firstproject:category_delete' category.slug %}">Удалить</a>
+            {% if user.is_staff %}
+                <a class="button" href="{% url 'firstproject:category_update' category.slug %}">Изменить</a>
+                <a class="button danger-button" href="{% url 'firstproject:category_delete' category.slug %}">Удалить</a>
+            {% endif %}
             <a class="button secondary-button" href="{% url 'firstproject:category_list' %}">Все категории</a>
         </div>
     </div>

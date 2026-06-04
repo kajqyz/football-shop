@@ -9,7 +9,9 @@
             <p class="eyebrow">Справочник</p>
             <h1>Поставщики</h1>
         </div>
-        <a class="button" href="{% url 'firstproject:supplier_create' %}">Добавить поставщика</a>
+        {% if user.is_staff %}
+            <a class="button" href="{% url 'firstproject:supplier_create' %}">Добавить поставщика</a>
+        {% endif %}
     </div>
     <div class="list-grid">
         {% for supplier in suppliers %}
@@ -18,10 +20,12 @@
                     <h3>{{ supplier.name }}</h3>
                     <p>{{ supplier.city }} · {{ supplier.email }}</p>
                     <a href="{{ supplier.get_absolute_url }}">Подробнее</a>
-                    <div class="card-actions">
-                        <a href="{% url 'firstproject:supplier_update' supplier.pk %}">Изменить</a>
-                        <a class="danger-link" href="{% url 'firstproject:supplier_delete' supplier.pk %}">Удалить</a>
-                    </div>
+                    {% if user.is_staff %}
+                        <div class="card-actions">
+                            <a href="{% url 'firstproject:supplier_update' supplier.pk %}">Изменить</a>
+                            <a class="danger-link" href="{% url 'firstproject:supplier_delete' supplier.pk %}">Удалить</a>
+                        </div>
+                    {% endif %}
                 </div>
             </article>
         {% empty %}

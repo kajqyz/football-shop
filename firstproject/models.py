@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.urls import reverse
 
 
@@ -152,6 +153,14 @@ class Order(models.Model):
         on_delete=models.PROTECT,
         related_name="orders",
         verbose_name="Покупатель",
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="orders",
+        verbose_name="Пользователь",
+        null=True,
+        blank=True,
     )
     created_at = models.DateTimeField("Дата заказа", auto_now_add=True)
     status = models.CharField(

@@ -1,6 +1,11 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 from .models import Brand, Category, Club, Product, Supplier
+
+
+PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 21)]
 
 
 class StyledModelForm(forms.ModelForm):
@@ -54,3 +59,51 @@ class ProductForm(StyledModelForm):
             "short_description",
             "description",
         ]
+
+
+class CartAddProductForm(forms.Form):
+    quantity = forms.TypedChoiceField(
+        label="Количество",
+        choices=PRODUCT_QUANTITY_CHOICES,
+        coerce=int,
+    )
+    reload = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["quantity"].widget.attrs["class"] = "quantity-input"
+
+
+class OrderCreateForm(forms.Form):
+    delivery_address = forms.CharField(
+        label="Адрес доставки",
+        max_length=240,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Введите адрес доставки",
+            }
+        ),
+    )
+
+
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField(label="Email", required=True)
+    first_name = forms.CharField(label="Имя", max_length=80, required=True)
+    last_name = forms.CharField(label="Фамилия", max_length=80, required=True)
+
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"

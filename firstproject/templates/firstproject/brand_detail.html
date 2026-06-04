@@ -13,8 +13,10 @@
         <div><dt>Страна</dt><dd>{{ brand.country }}</dd></div>
     </dl>
     <div class="actions">
-        <a class="button" href="{% url 'firstproject:brand_update' brand.pk %}">Изменить</a>
-        <a class="button danger-button" href="{% url 'firstproject:brand_delete' brand.pk %}">Удалить</a>
+        {% if user.is_staff %}
+            <a class="button" href="{% url 'firstproject:brand_update' brand.pk %}">Изменить</a>
+            <a class="button danger-button" href="{% url 'firstproject:brand_delete' brand.pk %}">Удалить</a>
+        {% endif %}
         <a class="button secondary-button" href="{% url 'firstproject:brand_list' %}">Вернуться к брендам</a>
     </div>
 </section>

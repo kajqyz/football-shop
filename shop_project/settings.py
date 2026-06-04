@@ -128,6 +128,11 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+LOGIN_REDIRECT_URL = "firstproject:home"
+LOGOUT_REDIRECT_URL = "firstproject:home"
+LOGIN_URL = "firstproject:login"
+CART_SESSION_ID = "cart"
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",

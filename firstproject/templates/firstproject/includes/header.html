@@ -8,7 +8,18 @@
         <a href="{% url 'firstproject:club_list' %}">Клубы</a>
         <a href="{% url 'firstproject:brand_list' %}">Бренды</a>
         <a href="{% url 'firstproject:supplier_list' %}">Поставщики</a>
-        <a href="{% url 'firstproject:order_list' %}">Заказы</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'firstproject:order_list' %}">Заказы</a>
+        {% endif %}
         <a class="cart-link" href="{% url 'firstproject:cart' %}">Корзина</a>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'firstproject:logout' %}" class="nav-form">
+                {% csrf_token %}
+                <button type="submit" class="nav-button">Выход</button>
+            </form>
+        {% else %}
+            <a href="{% url 'firstproject:login' %}">Авторизация</a>
+            <a href="{% url 'firstproject:register' %}">Регистрация</a>
+        {% endif %}
     </nav>
 </header>

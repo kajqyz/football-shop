@@ -8,6 +8,7 @@
     <h1>Заказ #{{ order.id }}</h1>
     <dl class="facts compact">
         <div><dt>Покупатель</dt><dd>{{ order.customer }}</dd></div>
+        <div><dt>Пользователь</dt><dd>{{ order.user|default:"Не указан" }}</dd></div>
         <div><dt>Статус</dt><dd>{{ order.get_status_display }}</dd></div>
         <div><dt>Адрес</dt><dd>{{ order.delivery_address }}</dd></div>
         <div><dt>Сумма</dt><dd>{{ order.total_price }} ₽</dd></div>

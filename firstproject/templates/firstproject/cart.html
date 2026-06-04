@@ -9,12 +9,72 @@
     <div class="cart-layout">
         <div>
             <h2>Товары для оформления</h2>
-            <p class="muted">Раздел подготовлен версткой. Добавление товаров будет реализовано на следующих этапах.</p>
+            {% if cart_items %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Товар</th>
+                                <th>Цена</th>
+                                <th>Количество</th>
+                                <th>Сумма</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                                <tr>
+                                    <td><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
+                                    <td>{{ item.product.price }} ₽</td>
+                                    <td>
+                                        <form method="post" action="{% url 'firstproject:cart_update' item.product.pk %}" class="quantity-form">
+                                            {% csrf_token %}
+                                            <select class="quantity-input" name="quantity">
+                                                {% for value, label in item.update_quantity_form.fields.quantity.choices %}
+                                                    <option value="{{ value }}" {% if item.quantity == value %}selected{% endif %}>{{ label }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <input type="hidden" name="reload" value="on">
+                                            <button type="submit" class="small-button">Обновить</button>
+                                        </form>
+                                    </td>
+                                    <td>{{ item.total_price }} ₽</td>
+                                    <td>
+                                        <form method="post" action="{% url 'firstproject:cart_remove' item.product.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="link-button danger-link">Удалить</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="muted">В корзине пока нет товаров.</p>
+                <a class="button" href="{% url 'firstproject:product_list' %}">Перейти к товарам</a>
+            {% endif %}
         </div>
         <aside class="summary">
+            <span>Товаров</span>
+            <strong>{{ cart_total_quantity }}</strong>
             <span>Итого</span>
-            <strong>0 ₽</strong>
-            <button type="button">Оформить заказ</button>
+            <strong>{{ cart_total_price }} ₽</strong>
+            {% if cart_items %}
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'firstproject:cart_create_order' %}" class="entity-form">
+                        {% csrf_token %}
+                        <div class="form-field">
+                            <label for="{{ order_form.delivery_address.id_for_label }}">{{ order_form.delivery_address.label }}</label>
+                            {{ order_form.delivery_address }}
+                        </div>
+                        <button type="submit">Оформить заказ</button>
+                    </form>
+                {% else %}
+                    <p class="muted">Для оформления заказа войдите в аккаунт.</p>
+                    <a class="button" href="{% url 'firstproject:login' %}">Авторизация</a>
+                {% endif %}
+            {% endif %}
         </aside>
     </div>
 </section>
