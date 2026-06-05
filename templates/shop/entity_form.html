@@ -1,11 +1,11 @@
 {% extends 'shop/base.html' %}
 
-{% block title %}{{ action_label }} | Футбол Маркет{% endblock %}
+{% block title %}{{ view.action_label }} | Футбол Маркет{% endblock %}
 
 {% block content %}
 <section class="content-panel narrow-panel">
     <p class="eyebrow">Форма данных</p>
-    <h1>{{ action_label }}</h1>
+    <h1>{{ view.action_label }}</h1>
     <form method="post" class="entity-form">
         {% csrf_token %}
         {% for field in form %}
@@ -24,8 +24,8 @@
             <div class="form-error">{{ form.non_field_errors }}</div>
         {% endif %}
         <div class="actions">
-            <button type="submit">{{ action_label }}</button>
-            <a class="button secondary-button" href="{{ cancel_url }}">Отмена</a>
+            <button type="submit">{{ view.action_label }}</button>
+            <a class="button secondary-button" href="{% url view.cancel_url_name %}">Отмена</a>
         </div>
     </form>
 </section>
