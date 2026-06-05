@@ -1,0 +1,25 @@
+{% load static %}
+<article class="card product-card">
+    <img src="{% static product.photo %}" alt="{{ product.name }}">
+    <div class="card-body">
+        <p class="tag">{{ product.category.name }} · {{ product.club.name }}</p>
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.short_description }}</p>
+        <div class="card-footer">
+            <strong>{{ product.price }} ₽</strong>
+            <a href="{{ product.get_absolute_url }}">Подробнее</a>
+        </div>
+        <div class="card-actions">
+            <form method="post" action="{% url 'shop:cart_add' product.slug %}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="reload" value="">
+                <button type="submit" class="small-button">В корзину</button>
+            </form>
+            {% if user.is_staff %}
+                <a href="{% url 'shop:product_update' product.slug %}">Изменить</a>
+                <a class="danger-link" href="{% url 'shop:product_delete' product.slug %}">Удалить</a>
+            {% endif %}
+        </div>
+    </div>
+</article>

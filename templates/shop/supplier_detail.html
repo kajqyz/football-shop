@@ -1,0 +1,23 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}{{ supplier.name }} | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="content-panel">
+    <p class="eyebrow">Поставщик</p>
+    <h1>{{ supplier.name }}</h1>
+    <p>{{ supplier.description }}</p>
+    <dl class="facts compact">
+        <div><dt>Город</dt><dd>{{ supplier.city }}</dd></div>
+        <div><dt>Email</dt><dd>{{ supplier.email }}</dd></div>
+        <div><dt>Телефон</dt><dd>{{ supplier.phone }}</dd></div>
+    </dl>
+    <div class="actions">
+        {% if user.is_staff %}
+            <a class="button" href="{% url 'shop:supplier_update' supplier.pk %}">Изменить</a>
+            <a class="button danger-button" href="{% url 'shop:supplier_delete' supplier.pk %}">Удалить</a>
+        {% endif %}
+        <a class="button secondary-button" href="{% url 'shop:supplier_list' %}">Вернуться к поставщикам</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: shopdjangodb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "123"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d shopdjangodb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    restart: unless-stopped
+    environment:
+      SECRET_KEY: "django-insecure-release-docker-key-change-me"
+      DEBUG: "False"
+      ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0"
+      CSRF_TRUSTED_ORIGINS: "http://localhost,http://127.0.0.1"
+      DB_NAME_PGSGL: shopdjangodb
+      DB_USERNAME_PGSGL: postgres
+      DB_PASSWORD_PGSGL: "123"
+      DB_HOST_PGSGL: db
+      DB_PORT_PGSGL: "5432"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - static_volume:/app/staticfiles
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/staticfiles:ro
+
+volumes:
+  postgres_data:
+  static_volume:

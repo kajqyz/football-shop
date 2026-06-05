@@ -1,0 +1,36 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Поставщики | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Справочник</p>
+            <h1>Поставщики</h1>
+        </div>
+        {% if user.is_staff %}
+            <a class="button" href="{% url 'shop:supplier_create' %}">Добавить поставщика</a>
+        {% endif %}
+    </div>
+    <div class="list-grid">
+        {% for supplier in suppliers %}
+            <article class="card">
+                <div class="card-body">
+                    <h3>{{ supplier.name }}</h3>
+                    <p>{{ supplier.city }} · {{ supplier.email }}</p>
+                    <a href="{{ supplier.get_absolute_url }}">Подробнее</a>
+                    {% if user.is_staff %}
+                        <div class="card-actions">
+                            <a href="{% url 'shop:supplier_update' supplier.pk %}">Изменить</a>
+                            <a class="danger-link" href="{% url 'shop:supplier_delete' supplier.pk %}">Удалить</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </article>
+        {% empty %}
+            <p class="muted">Поставщики не добавлены.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

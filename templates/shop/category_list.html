@@ -1,0 +1,36 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Категории | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Справочник</p>
+            <h1>Категории товаров</h1>
+        </div>
+        {% if user.is_staff %}
+            <a class="button" href="{% url 'shop:category_create' %}">Добавить категорию</a>
+        {% endif %}
+    </div>
+    <div class="list-grid">
+        {% for category in categories %}
+            <article class="card">
+                <div class="card-body">
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.description }}</p>
+                    <a href="{{ category.get_absolute_url }}">Открыть категорию</a>
+                    {% if user.is_staff %}
+                        <div class="card-actions">
+                            <a href="{% url 'shop:category_update' category.slug %}">Изменить</a>
+                            <a class="danger-link" href="{% url 'shop:category_delete' category.slug %}">Удалить</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </article>
+        {% empty %}
+            <p class="muted">Категории не добавлены.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

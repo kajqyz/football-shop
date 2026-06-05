@@ -1,0 +1,11 @@
+.git
+.gitignore
+.env
+.postgres-data
+.postman
+postman
+db.sqlite3
+__pycache__
+*.pyc
+staticfiles
+media

@@ -1,0 +1,22 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Футбол Маркет{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'shop/css/styles.css' %}">
+</head>
+<body>
+    {% include 'shop/includes/header.html' %}
+
+    <main class="page">
+        {% include 'shop/includes/messages.html' %}
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'shop/includes/footer.html' %}
+    <script src="{% static 'shop/js/main.js' %}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

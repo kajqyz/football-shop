@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
+from decouple import Csv, config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,18 +21,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-z(g)46sjkvk+29)r+j+ugh2=_@y0gv2*1=19no)@6%5s35_+t@"
+SECRET_KEY = config(
+    "SECRET_KEY",
+    default="django-insecure-z(g)46sjkvk+29)r+j+ugh2=_@y0gv2*1=19no)@6%5s35_+t@",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    default="127.0.0.1,localhost,testserver",
+    cast=Csv(),
+)
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "firstproject",
+    "football_shop.apps.FootballShopConfig",
     "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -57,7 +65,7 @@ ROOT_URLCONF = "shop_project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -78,11 +86,11 @@ WSGI_APPLICATION = "shop_project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME_PGSGL"),
-        "USER": config("DB_USERNAME_PGSGL"),
-        "PASSWORD": config("DB_PASSWORD_PGSGL"),
-        "HOST": config("DB_HOST_PGSGL"),
-        "PORT": config("DB_PORT_PGSGL"),
+        "NAME": config("DB_NAME_PGSGL", default="shopdjangodb"),
+        "USER": config("DB_USERNAME_PGSGL", default="postgres"),
+        "PASSWORD": config("DB_PASSWORD_PGSGL", default="123"),
+        "HOST": config("DB_HOST_PGSGL", default="127.0.0.1"),
+        "PORT": config("DB_PORT_PGSGL", default="5432"),
     }
 }
 
@@ -121,16 +129,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "firstproject:home"
-LOGOUT_REDIRECT_URL = "firstproject:home"
-LOGIN_URL = "firstproject:login"
+LOGIN_REDIRECT_URL = "shop:home"
+LOGOUT_REDIRECT_URL = "shop:home"
+LOGIN_URL = "shop:login"
 CART_SESSION_ID = "cart"
 
 REST_FRAMEWORK = {
@@ -141,7 +151,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
-    "DEFAULT_PAGINATION_CLASS": "firstproject.api_pagination.PageSizePagination",
+    "DEFAULT_PAGINATION_CLASS": "shop_api.pagination.PageSizePagination",
     "PAGE_SIZE": 5,
     "DEFAULT_FILTER_BACKENDS": [
         "rest_framework.filters.SearchFilter",

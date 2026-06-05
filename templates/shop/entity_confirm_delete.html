@@ -1,0 +1,16 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Удаление | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="content-panel narrow-panel">
+    <p class="eyebrow">Удаление записи</p>
+    <h1>Удалить {{ object_label }}?</h1>
+    <p>Вы действительно хотите удалить запись «{{ object }}»?</p>
+    <form method="post" class="actions">
+        {% csrf_token %}
+        <button type="submit" class="danger-button">Удалить</button>
+        <a class="button secondary-button" href="{{ cancel_url }}">Отмена</a>
+    </form>
+</section>
+{% endblock %}

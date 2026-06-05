@@ -1,0 +1,32 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}{{ action_label }} | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="content-panel narrow-panel">
+    <p class="eyebrow">Форма данных</p>
+    <h1>{{ action_label }}</h1>
+    <form method="post" class="entity-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small>{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p class="form-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        {% if form.non_field_errors %}
+            <div class="form-error">{{ form.non_field_errors }}</div>
+        {% endif %}
+        <div class="actions">
+            <button type="submit">{{ action_label }}</button>
+            <a class="button secondary-button" href="{{ cancel_url }}">Отмена</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

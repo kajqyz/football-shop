@@ -1,0 +1,23 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}{{ brand.name }} | Футбол Маркет{% endblock %}
+
+{% block content %}
+<section class="content-panel">
+    <img class="logo-large" src="{% static brand.logo %}" alt="{{ brand.name }}">
+    <p class="eyebrow">Бренд</p>
+    <h1>{{ brand.name }}</h1>
+    <p>{{ brand.description }}</p>
+    <dl class="facts compact">
+        <div><dt>Страна</dt><dd>{{ brand.country }}</dd></div>
+    </dl>
+    <div class="actions">
+        {% if user.is_staff %}
+            <a class="button" href="{% url 'shop:brand_update' brand.pk %}">Изменить</a>
+            <a class="button danger-button" href="{% url 'shop:brand_delete' brand.pk %}">Удалить</a>
+        {% endif %}
+        <a class="button secondary-button" href="{% url 'shop:brand_list' %}">Вернуться к брендам</a>
+    </div>
+</section>
+{% endblock %}
